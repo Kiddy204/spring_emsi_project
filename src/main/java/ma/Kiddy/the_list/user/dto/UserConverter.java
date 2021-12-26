@@ -2,7 +2,8 @@ package ma.Kiddy.the_list.user.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import ma.Kiddy.the_list.user.User;
+
+import ma.Kiddy.the_list.user.model.User;
 
 public class UserConverter {
 	public static UserVo toValueObject(User user) {

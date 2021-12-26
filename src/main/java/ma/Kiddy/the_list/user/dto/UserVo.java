@@ -22,6 +22,14 @@ public class UserVo {
 		public UserVo() {
 			super();
 		}	
+		public UserVo(String username, String password, String email, LocalDate dobDate) {
+			super();
+			this.username = username;
+			this.password = password;
+			this.email = email;
+			this.dobDate = dobDate;
+			this.role = " ";
+		}
 		public UserVo(long id, String username, String password, String email, LocalDate dobDate, String role) {
 			super();
 			this.id = id;
@@ -32,6 +40,7 @@ public class UserVo {
 			this.role = role;
 		}
 
+	
 		//Getters & Setters
 		public long getId() {
 			return id;
