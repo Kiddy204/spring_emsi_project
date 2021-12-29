@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import lombok.RequiredArgsConstructor;
 import ma.Kiddy.the_list.auth.filter.CustomAuthenticationFilter;
-import ma.Kiddy.the_list.auth.filter.CustomAutorizationFilter;
+import ma.Kiddy.the_list.auth.filter.CustomAuthorizationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -40,11 +40,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		http.authorizeRequests().antMatchers("/login").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/users/** ").hasAnyAuthority("USER");
+		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/users/** ", "/token/refresh/**").hasAnyAuthority("USER");
 		http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/role/**").hasAnyAuthority("ADMIN");
 		http.authorizeRequests().anyRequest().authenticated();
 		http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
-		http.addFilterBefore(new CustomAutorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 
 
