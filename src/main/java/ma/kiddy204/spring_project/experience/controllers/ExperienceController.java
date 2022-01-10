@@ -1,5 +1,7 @@
 package ma.kiddy204.spring_project.experience.controllers;
 
+import lombok.extern.slf4j.Slf4j;
+import ma.kiddy204.spring_project.experience.services.PeriodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -52,11 +54,15 @@ class ExperienceForm{
 
 @RestController
 @RequestMapping(value = "api/experience")
+@Slf4j
 public class ExperienceController {
-	
+
 	@Autowired
 	ExperienceService experienceService;
-	
+
+	@Autowired
+	PeriodService periodService;
+
 	@PostMapping(
 			value = "/save",
 			produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, 
@@ -64,16 +70,14 @@ public class ExperienceController {
 			)
 	public ResponseEntity<Object> 
 	createPeriod(@ModelAttribute ExperienceForm fullExperience){	
-			Experience experience = new Experience();
 			PeriodVo periodVo= new PeriodVo();
-			experience.setName(fullExperience.getName());
-			experience.setDescription(fullExperience.getDescription());
 			periodVo.setEarliestDate(fullExperience.getEarliestDate());
 			periodVo.setLatestDate(fullExperience.getLatestDate());
 			periodVo.setFlexibility(fullExperience.getFlexibility());
 			periodVo.setMin_period(fullExperience.getMin_period());
-			experience.setPeriod( PeriodConverter.toObject(periodVo));
-			experienceService.save(ExperienceConverter.toValueObject(experience));
+			Period periodSaved = periodService.save(periodVo);
+			ExperienceVo experience = new ExperienceVo(fullExperience.getName(),fullExperience.getDescription(),periodSaved);
+			experienceService.save(experience);
 			return new ResponseEntity<Object>(periodVo,HttpStatus.OK);
 	}
 

@@ -16,6 +16,12 @@ public class ExperienceVo {
 	public ExperienceVo() {
 		super();
 	}
+	public ExperienceVo(String name, String description, Period period) {
+		super();
+		this.name = name;
+		this.description = description;
+		this.period = period;
+	}
 	public ExperienceVo(Long id, String name, String description, Period period) {
 		super();
 		this.id = id;
