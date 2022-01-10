@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+
 public class UserVo {
 
 		
@@ -14,7 +17,8 @@ public class UserVo {
 		private String username;
 		private String password;
 		private String email;
-		private LocalDate dobDate;
+		@JsonFormat( pattern = "yyyy-MM-dd")
+		private String dobDate;
 		private String role;
 		
 		//Constructors
@@ -22,7 +26,7 @@ public class UserVo {
 		public UserVo() {
 			super();
 		}	
-		public UserVo(String username, String password, String email, LocalDate dobDate) {
+		public UserVo(String username, String password, String email, String dobDate) {
 			super();
 			this.username = username;
 			this.password = password;
@@ -30,7 +34,7 @@ public class UserVo {
 			this.dobDate = dobDate;
 			this.role = " ";
 		}
-		public UserVo(long id, String username, String password, String email, LocalDate dobDate, String role) {
+		public UserVo(long id, String username, String password, String email, String dobDate, String role) {
 			super();
 			this.id = id;
 			this.username = username;
@@ -66,10 +70,10 @@ public class UserVo {
 		public void setEmail(String email) {
 			this.email = email;
 		}
-		public LocalDate getDobDate() {
+		public String getDobDate() {
 			return dobDate;
 		}
-		public void setDobDate(LocalDate dobDate) {
+		public void setDobDate(String dobDate) {
 			this.dobDate = dobDate;
 		}
 		public String getRole() {
@@ -77,6 +81,11 @@ public class UserVo {
 		}
 		public void setRole(String role) {
 			this.role = role;
+		}
+		@Override
+		public String toString() {
+			return "UserVo [id=" + id + ", username=" + username + ", email=" + email + ", dobDate=" + dobDate
+					+ ", role=" + role + "]";
 		}
 
 		

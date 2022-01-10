@@ -1,5 +1,6 @@
 package ma.kiddy204.spring_project.user.dto;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class UserConverter {
 		vo.setId(user.getId()); 
 		vo.setUsername(user.getUsername()); 
 		vo.setEmail(user.getEmail()); 
-		vo.setDobDate(user.getDobDate());
+		vo.setDobDate(user.getDobDate().toString());
 		user.setRole(user.getRole());
 		vo.setPassword(user.getPassword()); 
 		return vo;
@@ -22,7 +23,7 @@ public class UserConverter {
 		user.setId(valueObject.getId()); 
 		user.setUsername(valueObject.getUsername()); 
 		user.setEmail(valueObject.getEmail());	
-		user.setDobDate(valueObject.getDobDate());
+		user.setDobDate(LocalDate.parse(valueObject.getDobDate()));
 		user.setRole(valueObject.getRole());
 		user.setPassword(valueObject.getPassword());
 		return user;

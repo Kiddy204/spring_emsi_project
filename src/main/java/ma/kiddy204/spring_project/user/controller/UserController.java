@@ -3,6 +3,8 @@ package ma.kiddy204.spring_project.user.controller;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -14,6 +16,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +27,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,9 +68,14 @@ class RoleToUserForm{
 	
 }
 
+
+
 @RestController
 @RequestMapping(value = "/api")
 public class UserController {
+	
+	Logger logger = LoggerFactory.getLogger(UserController.class);
+
 	@Autowired
 	private final IUserService userService;
 	
@@ -90,25 +100,40 @@ public class UserController {
 	public ResponseEntity<Object> 
 	getUserById(@PathVariable(name = "id") Long userId){
 		UserVo userSearch= userService.getUserById(userId);
-		System.out.println(userSearch);
 		if(userSearch != null) {
 			return new ResponseEntity<Object>(userSearch,HttpStatus.OK);
 		}
 		return new ResponseEntity<>("User not found", HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/save")
+	
+	
+	
+	@PostMapping(value = "/save",
+			produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, 
+			consumes= {MediaType.APPLICATION_JSON_VALUE}
+	)
 	public ResponseEntity<Object> 
-	createUser(@RequestBody UserVo userVo){
-		userService.save(userVo);
-		return new ResponseEntity<>("User created successfully!", HttpStatus.CREATED);
+	createUser(@ModelAttribute UserVo user){
+//		UserVo userVo= new UserVo();
+//		userVo.setDobDate(user.getDobDate());
+//		userVo.setEmail(user.getEmail());
+//		userVo.setPassword(user.getEmail());
+//		userVo.setRole(user.getRole());
+//		userVo.setUsername(user.getUsername());
+		userService.save(user);
+		return new ResponseEntity<>("User created successfully ! \n" + user.toString(), HttpStatus.CREATED);
 	}
 	
 	@PostMapping(value = "/{id}/update")
 	public ResponseEntity<Object>
 	updateUser(@RequestBody UserVo userVo){
-		userService.update(userVo);
-		return new ResponseEntity<>("User updated successfull ! ", HttpStatus.ACCEPTED);
+		UserVo userSearch= userService.getUserById(userVo.getId());
+		if(userSearch != null) {
+			userService.update(userVo);
+			return new ResponseEntity<>(userSearch, HttpStatus.ACCEPTED);
+		}
+		return new ResponseEntity<Object>("User Not Found",HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/token/refresh")
@@ -173,7 +198,6 @@ public class UserController {
 	public ResponseEntity<Object> 
 	addRoleToUser(@RequestBody RoleToUserForm form ){
 		this.roleService.addToUser(form.getUserId(), form.getRoleName());
-		
 		return new ResponseEntity<>("New Role has been granted to User ", HttpStatus.OK);	
 	}
 	

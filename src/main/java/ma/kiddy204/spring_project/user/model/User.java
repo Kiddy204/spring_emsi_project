@@ -17,6 +17,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 
 @Entity @Data 
@@ -24,18 +26,16 @@ public class User implements UserDetails {
 	
 	@Id @GeneratedValue
 	private Long id;
-	@Column( nullable = false)
+	@Column(unique = true)
 	private String username;
-	@Column( nullable = false)
+	@Column()
 	private String password;
-	@Column( 
-			nullable = false,
-			unique = true
-			)
+	@Column(unique = true)
 	private String email;
-	@Column( nullable = false)
+	@Column()
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate dobDate;
-	@Column( nullable = false) 
+	@Column() 
 	private String role;
 	
 	@ManyToMany(fetch = FetchType.EAGER) // allow me to fetch roles each time i fetch a user

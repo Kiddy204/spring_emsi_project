@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class UserRole {
 
@@ -24,6 +23,14 @@ public class UserRole {
 	public UserRole(String name) {
 		this.name=name;
 	}
+	
+	
+
+	public UserRole() {
+		super();
+	}
+
+
 
 	//Getters & Setters 
 	public Long get_id() {

@@ -46,10 +46,6 @@ public class UserService implements IUserService, CommandLineRunner {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		User user = userDAO.findByUsername(username).get(0);
-		if (user == null) {
-			throw new UsernameNotFoundException("User not found in the database");
-		}
-
 		List<SimpleGrantedAuthority> springSecurityAuthorities = new ArrayList<>();
 		user.getRoles().forEach(role -> {
 			springSecurityAuthorities.add(new SimpleGrantedAuthority(role.getName()));
@@ -95,12 +91,16 @@ public class UserService implements IUserService, CommandLineRunner {
 
 	@Override
 	public void save(UserVo userVo) {
-		
-		
 		String password =  userVo.getPassword();
-		String encrypted= passwordEncoder.encode(password);
-		userVo.setPassword(encrypted);
-		userDAO.save(UserConverter.toObject(userVo));
+		
+			String encrypted= passwordEncoder.encode(password);
+			userVo.setPassword(encrypted);
+
+			userDAO.save(UserConverter.toObject(userVo));
+		
+		
+		
+		
 	}
 
 	@Override
@@ -124,14 +124,14 @@ public class UserService implements IUserService, CommandLineRunner {
 		roleService.save(new UserRole("ADMIN"));
 
 		// Save Users
-		save(new UserVo("admin", "12345", "name3@mail.com", date));
-		save(new UserVo("user", "12345", "name1@mail.com", date));
-		save(new UserVo("joe", "12345", "name2@mail.com", date));
-		save(new UserVo("sarah", "12345", "name4@mail.com", date));
-		save(new UserVo("aymane", "12345", "name5@mail.com", date));
-		save(new UserVo("Wes", "12345", "name6@mail.com", date));
-		save(new UserVo("Rami", "12345", "name7@mail.com", date));
-		save(new UserVo("Hamid", "12345", "name8@mail.com", date));
+		save(new UserVo("admin", "12345", "name3@mail.com", "1990-10-10"));
+		save(new UserVo("user", "12345", "name1@mail.com", "1990-10-10"));
+		save(new UserVo("joe", "12345", "name2@mail.com", "1990-10-10"));
+		save(new UserVo("sarah", "12345", "name4@mail.com", "1990-10-10"));
+		save(new UserVo("aymane", "12345", "name5@mail.com", "1990-10-10"));
+		save(new UserVo("Wes", "12345", "name6@mail.com", "1990-10-10"));
+		save(new UserVo("Rami", "12345", "name7@mail.com", "1990-10-10"));
+		save(new UserVo("Hamid", "12345", "name8@mail.com", "1990-10-10"));
 
 		List<UserVo> users = this.getUsers();
 		for (UserVo user : users) {
