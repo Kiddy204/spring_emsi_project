@@ -6,10 +6,20 @@ public class ExperienceConverter {
 
 	public static Experience toObject(ExperienceVo vo){
 		Experience exp = new Experience();
-		exp.setId(vo.getId());
-		exp.setName(vo.getName());
-		exp.setDescription(vo.getDescription());
-		exp.setPeriod(vo.getPeriod());
+		if(vo.getId() != null) {
+			exp.setId(vo.getId());
+		}
+		if(vo.getName() != null) {
+			exp.setName(vo.getName());
+
+		}
+		if(vo.getDescription() != null) {
+			exp.setDescription(vo.getDescription());
+
+		}
+		if(vo.getPeriod()!=null) {			
+			exp.setPeriod(vo.getPeriod());
+		}
 		return exp;
 	}
 	

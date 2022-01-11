@@ -20,7 +20,9 @@ public class PeriodService implements IPeriodService, CommandLineRunner{
 	PeriodRepository dao;
 	
 	@Override
-	public Period save(PeriodVo periodVo) {
+	public Period save(PeriodVo periodVo) throws Exception {
+		
+		throw new Exception("Fuck This Shit");
 		return dao.save(PeriodConverter.toObject(periodVo));
 	}
 
