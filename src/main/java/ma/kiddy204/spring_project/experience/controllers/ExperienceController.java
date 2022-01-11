@@ -65,7 +65,7 @@ public class ExperienceController {
 
 	@PostMapping(
 			value = "/save",
-			produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, 
+			produces = { MediaType.APPLICATION_JSON_VALUE},
 			consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
 			)
 	public ResponseEntity<Object> 
@@ -78,7 +78,7 @@ public class ExperienceController {
 			Period periodSaved = periodService.save(periodVo);
 			ExperienceVo experience = new ExperienceVo(fullExperience.getName(),fullExperience.getDescription(),periodSaved);
 			experienceService.save(experience);
-			return new ResponseEntity<Object>(periodVo,HttpStatus.OK);
+			return new ResponseEntity<Object>(periodSaved,HttpStatus.OK);
 	}
 
 }
