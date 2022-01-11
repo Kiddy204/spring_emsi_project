@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.Data;
 import ma.kiddy204.spring_project.experience.dto.ExperienceConverter;
@@ -51,7 +48,7 @@ class ExperienceForm{
 		return flexibility;
 	}
 }
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping(value = "api/experience")
 @Slf4j
@@ -65,11 +62,11 @@ public class ExperienceController {
 
 	@PostMapping(
 			value = "/save",
-			produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE}, 
+			produces = { MediaType.APPLICATION_JSON_VALUE},
 			consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
 			)
-	public ResponseEntity<Object> 
-	createPeriod(@ModelAttribute ExperienceForm fullExperience){	
+	public ResponseEntity<Object>
+	createExperience(@ModelAttribute ExperienceForm fullExperience){
 			PeriodVo periodVo= new PeriodVo();
 			periodVo.setEarliestDate(fullExperience.getEarliestDate());
 			periodVo.setLatestDate(fullExperience.getLatestDate());
@@ -77,8 +74,8 @@ public class ExperienceController {
 			periodVo.setMin_period(fullExperience.getMin_period());
 			Period periodSaved = periodService.save(periodVo);
 			ExperienceVo experience = new ExperienceVo(fullExperience.getName(),fullExperience.getDescription(),periodSaved);
-			experienceService.save(experience);
-			return new ResponseEntity<Object>(periodVo,HttpStatus.OK);
+			Experience experienceSaved=experienceService.save(experience);
+			return new ResponseEntity<Object>(experienceSaved,HttpStatus.OK);
 	}
 
 }

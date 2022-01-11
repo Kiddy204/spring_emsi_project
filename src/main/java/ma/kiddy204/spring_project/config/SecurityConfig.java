@@ -1,5 +1,6 @@
 package ma.kiddy204.spring_project.config;
 
+import ma.kiddy204.spring_project.auth.filter.CrossOriginConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,7 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
 		http.authorizeRequests().antMatchers("/login").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/users/** ", "/token/refresh/**","/api/period/** " ).hasAnyAuthority("USER");
 		http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/role/**").hasAnyAuthority("ADMIN");
@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
 
-		
+
 	}
 	
 	@Bean
