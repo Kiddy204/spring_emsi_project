@@ -74,6 +74,7 @@ public class ExperienceController {
 			periodVo.setMin_period(fullExperience.getMin_period());
 			Period periodSaved = periodService.save(periodVo);
 			ExperienceVo experience = new ExperienceVo(fullExperience.getName(),fullExperience.getDescription(),periodSaved);
+
 			Experience experienceSaved=experienceService.save(experience);
 			return new ResponseEntity<Object>(experienceSaved,HttpStatus.OK);
 	}
