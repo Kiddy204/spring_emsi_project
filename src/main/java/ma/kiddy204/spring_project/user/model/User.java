@@ -6,13 +6,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
+import ma.kiddy204.spring_project.experience.models.Experience;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.servlet.handler.UserRoleAuthorizationInterceptor;
@@ -41,7 +37,10 @@ public class User implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER) // allow me to fetch roles each time i fetch a user
 	private Collection<UserRole> roles= new ArrayList<>();
 	//Constructors
-	
+
+	@OneToMany(fetch = FetchType.EAGER)
+	private Collection<Experience>  experiences= new ArrayList<>();
+
 	
 	public User() {
 		super();
@@ -117,7 +116,18 @@ public class User implements UserDetails {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	// to String 
+
+	public Collection<Experience> getExperiences() {
+		return experiences;
+	}
+
+	public void setExperiences(Collection<Experience> experiences) {
+		this.experiences = experiences;
+	}
+
+	
+
+	// to String
 
 	@Override
 	public String toString() {
