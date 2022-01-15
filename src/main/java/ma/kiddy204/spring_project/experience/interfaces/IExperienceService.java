@@ -1,14 +1,13 @@
 package ma.kiddy204.spring_project.experience.interfaces;
 
-import java.util.List;
-
 import ma.kiddy204.spring_project.experience.dto.ExperienceVo;
-import ma.kiddy204.spring_project.user.dto.UserVo;
+import ma.kiddy204.spring_project.experience.models.Experience;
 
-public interface IExperienceService {
+public interface
+IExperienceService {
 
-	public ExperienceVo findUserById(Long id);
-	public void save(ExperienceVo experienceVo);
-	public void update(ExperienceVo experienceVo);
-	public void delete(ExperienceVo experienceVo);
+	ExperienceVo findUserById(Long id);
+	Experience save(ExperienceVo experienceVo);
+	void update(ExperienceVo experienceVo);
+	void delete(ExperienceVo experienceVo);
 }

@@ -18,6 +18,8 @@ public interface IUserService extends UserDetailsService {
 	public void update(UserVo userVo);
 	public void delete(UserVo userVo);
 	public List <UserVo> sortBy(String fieldName);
+	public void addExperience(Long id, String roleName);
 
-	
+
+
 }
