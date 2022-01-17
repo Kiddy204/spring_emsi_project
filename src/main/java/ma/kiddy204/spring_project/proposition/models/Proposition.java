@@ -21,9 +21,9 @@ public class Proposition {
     private Float estimatedBudget;
     private Float matchingScore;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     private Collection<Transport> transportOffers = new ArrayList<>();;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     private Collection<Housing> housingOffers = new ArrayList<>();;
 }

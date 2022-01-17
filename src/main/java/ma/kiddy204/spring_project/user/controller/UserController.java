@@ -3,10 +3,6 @@ package ma.kiddy204.spring_project.user.controller;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,29 +12,29 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ma.kiddy204.spring_project.experience.dto.ExperienceConverter;
+import ma.kiddy204.spring_project.experience.dto.ExperienceVo;
+import ma.kiddy204.spring_project.experience.dto.PeriodVo;
+import ma.kiddy204.spring_project.experience.interfaces.IExperienceService;
+import ma.kiddy204.spring_project.experience.interfaces.IPeriodService;
+import ma.kiddy204.spring_project.experience.models.Experience;
+import ma.kiddy204.spring_project.experience.models.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Data;
 import ma.kiddy204.spring_project.user.dto.UserConverter;
-import ma.kiddy204.spring_project.user.dto.UserRoleVo;
 import ma.kiddy204.spring_project.user.dto.UserVo;
 import ma.kiddy204.spring_project.user.model.User;
 import ma.kiddy204.spring_project.user.model.UserRole;
@@ -61,6 +57,47 @@ class RoleToUserForm{
 	}
 	
 }
+@Data
+class AddExperienceForm{
+	//User
+	private Long userId;
+	//Experience
+	private String name;
+	private String description;
+	//Period
+	private String earliestDate;
+	private String latestDate;
+	private int min_period;
+	private int flexibility;
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getEarliestDate() {
+		return earliestDate;
+	}
+
+	public String getLatestDate() {
+		return latestDate;
+	}
+
+	public int getMin_period() {
+		return min_period;
+	}
+
+	public int getFlexibility() {
+		return flexibility;
+	}
+}
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -75,14 +112,22 @@ public class UserController {
 	
 	@Autowired
 	private final IUserRoleService roleService;
-	
+
+	@Autowired
+	private final IExperienceService  experienceService;
+
+	@Autowired
+	private final IPeriodService periodService;
+
 
 	public UserController(
 			UserService userService,
-			UserRoleService roleService
-			) {
+			UserRoleService roleService,
+			IExperienceService experienceService, IPeriodService periodService) {
 		this.userService= userService; 		
 		this.roleService= roleService;
+		this.experienceService = experienceService;
+		this.periodService = periodService;
 	}
 	
 	@GetMapping(value = "/users" ,produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
@@ -194,10 +239,28 @@ public class UserController {
 		this.roleService.addToUser(form.getUserId(), form.getRoleName());
 		return new ResponseEntity<>("New Role has been granted to User ", HttpStatus.OK);	
 	}
-	
-	
-
-	
 //	deleteUser(){}
+
+	@PostMapping(
+			value = "/experience/create",
+			produces = { MediaType.APPLICATION_JSON_VALUE},
+			consumes= {MediaType.APPLICATION_FORM_URLENCODED_VALUE}
+	)
+	public ResponseEntity<Object>
+	addExperience(@ModelAttribute AddExperienceForm addExperienceForm){
+		PeriodVo periodVo= new PeriodVo();
+		periodVo.setEarliestDate(addExperienceForm.getEarliestDate());
+		periodVo.setLatestDate(addExperienceForm.getLatestDate());
+		periodVo.setFlexibility(addExperienceForm.getFlexibility());
+		periodVo.setMin_period(addExperienceForm.getMin_period());
+		Period periodSaved = periodService.save(periodVo);
+
+		ExperienceVo experience = new ExperienceVo(addExperienceForm.getName(),addExperienceForm.getDescription(),periodSaved);
+		Experience experienceSaved=experienceService.save(experience);
+		UserVo user = userService.getUserById(addExperienceForm.getUserId());
+		this.userService.addExperience(user.getId(),(experienceSaved));
+		//User savedUser=this.userService.save((user));
+		return new ResponseEntity<Object>("User Experiecne is saved ! ",HttpStatus.OK);
+	}
 
 }
