@@ -15,7 +15,8 @@ public class UserConverter {
 		vo.setEmail(user.getEmail()); 
 		vo.setDobDate(user.getDobDate().toString());
 		user.setRole(user.getRole());
-		vo.setPassword(user.getPassword()); 
+		vo.setPassword(user.getPassword());
+		vo.setExperiences(user.getExperiences());
 		return vo;
 	}
 	public static User toObject(UserVo valueObject) {
@@ -26,6 +27,7 @@ public class UserConverter {
 		user.setDobDate(LocalDate.parse(valueObject.getDobDate()));
 		user.setRole(valueObject.getRole());
 		user.setPassword(valueObject.getPassword());
+		user.setExperiences(valueObject.getExperiences());
 		return user;
 	}
 	public static List<UserVo> toListVo(List<User> listBo) {

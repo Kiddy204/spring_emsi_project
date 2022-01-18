@@ -38,7 +38,7 @@ public class User implements UserDetails {
 	private Collection<UserRole> roles= new ArrayList<>();
 	//Constructors
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Collection<Experience>  experiences= new ArrayList<>();
 
 	
@@ -118,14 +118,12 @@ public class User implements UserDetails {
 	}
 
 	public Collection<Experience> getExperiences() {
-		return experiences;
+		return this.experiences;
 	}
 
 	public void setExperiences(Collection<Experience> experiences) {
 		this.experiences = experiences;
 	}
-
-	
 
 	// to String
 

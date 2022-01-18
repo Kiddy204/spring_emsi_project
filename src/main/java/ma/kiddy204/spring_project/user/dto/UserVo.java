@@ -1,12 +1,15 @@
 package ma.kiddy204.spring_project.user.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import ma.kiddy204.spring_project.experience.models.Experience;
 
 
 public class UserVo {
@@ -20,8 +23,10 @@ public class UserVo {
 		@JsonFormat( pattern = "yyyy-MM-dd")
 		private String dobDate;
 		private String role;
-		
-		//Constructors
+		private Collection<Experience> experiences= new ArrayList<>();
+
+
+	//Constructors
 
 		public UserVo() {
 			super();
@@ -82,11 +87,19 @@ public class UserVo {
 		public void setRole(String role) {
 			this.role = role;
 		}
-		@Override
-		public String toString() {
-			return "UserVo [id=" + id + ", username=" + username + ", email=" + email + ", dobDate=" + dobDate
-					+ ", role=" + role + "]";
+
+		public Collection<Experience> getExperiences() {
+			return experiences;
 		}
+		public void setExperiences(Collection<Experience> experiences) {
+			this.experiences = experiences;
+		}
+
+		@Override
+			public String toString() {
+				return "UserVo [id=" + id + ", username=" + username + ", email=" + email + ", dobDate=" + dobDate
+						+ ", role=" + role + "]";
+			}
 
 		
 }

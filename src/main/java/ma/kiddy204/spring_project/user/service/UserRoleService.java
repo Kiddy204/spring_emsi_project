@@ -51,6 +51,7 @@ public class UserRoleService implements IUserRoleService ,CommandLineRunner{
 		UserRole role= roleDAO.findByName(roleName).get(0);
 		System.out.println(" Add  Role : " +role.getName());
 		user.getRoles().add(role);
+		//userDao.save(user);
 		
 		
 	}

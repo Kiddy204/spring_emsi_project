@@ -1,10 +1,8 @@
 package ma.kiddy204.spring_project.experience.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import ma.kiddy204.spring_project.user.model.User;
+
+import javax.persistence.*;
 
 @Entity
 public class Experience {
@@ -20,6 +18,11 @@ public class Experience {
 	
 	@OneToOne
 	private Period period;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User user;
+
+
 	
 	//Contructors 
 	
@@ -68,6 +71,14 @@ public class Experience {
 
 	public void setPeriod(Period period) {
 		this.period = period;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

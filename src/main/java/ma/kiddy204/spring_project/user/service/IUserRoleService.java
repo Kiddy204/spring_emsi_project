@@ -11,11 +11,10 @@ public interface IUserRoleService {
 	public void save(UserRole role);
 	public void update(UserRole role);
 	public void delete(UserRole role);
-
-	public void addToUser(Long id, String roleName);
-	public User getById(Long id); 
+	public User getById(Long id);
 	public User getByUsername(String username);
-	
 	public List<UserRole> findAll();
-	
+	public void addToUser(Long id, String roleName);
+
+
 }

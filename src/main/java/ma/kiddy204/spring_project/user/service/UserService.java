@@ -3,23 +3,19 @@ package ma.kiddy204.spring_project.user.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
+
+import ma.kiddy204.spring_project.experience.models.Experience;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.ctc.wstx.shaded.msv_core.verifier.jarv.Const;
-
 import lombok.extern.slf4j.Slf4j;
-import ma.kiddy204.spring_project.user.controller.UserController;
 import ma.kiddy204.spring_project.user.dao.UserDAO;
 import ma.kiddy204.spring_project.user.dao.UserRoleDAO;
 import ma.kiddy204.spring_project.user.dto.UserConverter;
@@ -72,6 +68,20 @@ public class UserService implements IUserService, CommandLineRunner {
 	}
 
 	@Override
+	public void addExperience(Long id, Experience experience) {
+
+		User user= userDAO.getById(id);
+	    user.getExperiences().add(experience);
+		user= userDAO.getById(id);
+		Collection<Experience> experiences =user.getExperiences();
+ 		userDAO.save(user);
+
+
+
+	}
+
+
+	@Override
 	public List<UserVo> findUserByEmail(String email) {
 		List<User> users = userDAO.findByEmail(email);
 		return UserConverter.toListVo(users);
@@ -90,17 +100,16 @@ public class UserService implements IUserService, CommandLineRunner {
 	}
 
 	@Override
-	public void save(UserVo userVo) {
+	public User save(UserVo userVo) {
 		String password =  userVo.getPassword();
 		
 			String encrypted= passwordEncoder.encode(password);
 			userVo.setPassword(encrypted);
 
 			userDAO.save(UserConverter.toObject(userVo));
-		
-		
-		
-		
+
+
+		return null;
 	}
 
 	@Override
