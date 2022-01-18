@@ -6,12 +6,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 import ma.kiddy204.spring_project.experience.models.Period;
+import ma.kiddy204.spring_project.user.model.User;
 
 public class ExperienceVo {
 	private Long id ;
 	private String name;
 	private String description;
 	private Period period;
+	private User user;
 	//Contructors 
 	public ExperienceVo() {
 		super();
@@ -53,6 +55,13 @@ public class ExperienceVo {
 	}
 	public void setPeriod(Period period) {
 		this.period = period;
+	}
+
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 	@Override
 	public String toString() {

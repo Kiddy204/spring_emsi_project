@@ -248,6 +248,8 @@ public class UserController {
 	)
 	public ResponseEntity<Object>
 	addExperience(@ModelAttribute AddExperienceForm addExperienceForm){
+		UserVo user = userService.getUserById(addExperienceForm.getUserId());
+
 		PeriodVo periodVo= new PeriodVo();
 		periodVo.setEarliestDate(addExperienceForm.getEarliestDate());
 		periodVo.setLatestDate(addExperienceForm.getLatestDate());
@@ -256,8 +258,8 @@ public class UserController {
 		Period periodSaved = periodService.save(periodVo);
 
 		ExperienceVo experience = new ExperienceVo(addExperienceForm.getName(),addExperienceForm.getDescription(),periodSaved);
+		experience.setUser(UserConverter.toObject(user));
 		Experience experienceSaved=experienceService.save(experience);
-		UserVo user = userService.getUserById(addExperienceForm.getUserId());
 		this.userService.addExperience(user.getId(),(experienceSaved));
 		//User savedUser=this.userService.save((user));
 		return new ResponseEntity<Object>("User Experiecne is saved ! ",HttpStatus.OK);

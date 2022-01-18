@@ -19,7 +19,7 @@ public class Experience {
 	@OneToOne
 	private Period period;
 
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.EAGER)
 	private User user;
 
 
@@ -71,6 +71,14 @@ public class Experience {
 
 	public void setPeriod(Period period) {
 		this.period = period;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

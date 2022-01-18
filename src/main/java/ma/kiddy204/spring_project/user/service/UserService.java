@@ -2,6 +2,7 @@ package ma.kiddy204.spring_project.user.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import ma.kiddy204.spring_project.experience.models.Experience;
@@ -72,7 +73,8 @@ public class UserService implements IUserService, CommandLineRunner {
 		User user= userDAO.getById(id);
 	    user.getExperiences().add(experience);
 		user= userDAO.getById(id);
-		userDAO.save(user);
+		Collection<Experience> experiences =user.getExperiences();
+ 		userDAO.save(user);
 
 
 

@@ -10,6 +10,8 @@ public class ExperienceConverter {
 		exp.setName(vo.getName());
 		exp.setDescription(vo.getDescription());
 		exp.setPeriod(vo.getPeriod());
+		exp.setUser(vo.getUser());
+
 		return exp;
 	}
 	
@@ -20,6 +22,7 @@ public class ExperienceConverter {
 		vo.setName(exp.getName());
 		vo.setDescription(exp.getDescription());
 		vo.setPeriod(exp.getPeriod());
+		vo.setUser(exp.getUser());
 		return vo;
 	}
 }
